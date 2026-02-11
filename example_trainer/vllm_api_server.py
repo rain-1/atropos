@@ -26,7 +26,10 @@ from vllm.logger import init_logger
 from vllm.sampling_params import RequestOutputKind, SamplingParams
 from vllm.usage.usage_lib import UsageContext
 from vllm.utils import random_uuid
-from vllm.v1.engine.async_llm import AsyncLLMEngine
+try:
+    from vllm.v1.engine.async_llm import AsyncLLMEngine
+except ImportError:
+    from vllm.v1.engine.async_llm import AsyncLLM as AsyncLLMEngine
 
 try:
     from vllm.utils.argparse_utils import FlexibleArgumentParser

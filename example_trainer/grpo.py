@@ -304,7 +304,7 @@ def train(config: TrainingConfig):
     vllm_command = [
         "python",
         "-m",
-        "vllm.entrypoints.openai.api_server",
+        "example_trainer.vllm_api_server",
         "--model",
         config.model_name,
         "--port",
@@ -313,7 +313,7 @@ def train(config: TrainingConfig):
         "auto",
         "--gpu-memory-utilization",
         "0.45",
-        "--disable-log-requests",
+        "--no-enable-log-requests",
     ]
     print(f"  Launching vLLM server: {' '.join(vllm_command)}")
     try:
@@ -419,7 +419,7 @@ def train(config: TrainingConfig):
                 neg_logp = (logp_per_token * neg).mean().item()
                 total_pos_logp += pos_logp
                 total_neg_logp += neg_logp
-                total_logp += avg_logp
+                total_logp += avg_logp.mean().item()
                 total_pos += pos.sum().item()
                 total_neg += neg.sum().item()
 
@@ -490,7 +490,7 @@ def train(config: TrainingConfig):
             vllm_command = [
                 "python",
                 "-m",
-                "vllm.entrypoints.openai.api_server",
+                "example_trainer.vllm_api_server",
                 "--model",
                 os.path.join(config.save_path, f"step_{step+1}"),
                 "--port",
@@ -499,7 +499,7 @@ def train(config: TrainingConfig):
                 "auto",
                 "--gpu-memory-utilization",
                 "0.45",
-                "--disable-log-requests",
+                "--no-enable-log-requests",
                 "--served-model-name",
                 config.model_name,
             ]
